@@ -44,7 +44,42 @@
                 <TableLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/lnPage" ></TableLayout>
+                    android:id="@+id/lnPage" >
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <Button
+                            android:text="Retour"
+                            android:id="@+id/goback"
+                            />
+                        <Button
+                            android:text="Aide"
+                            android:id="@+id/help"
+                            />
+                        <Button
+                            android:text="Ajouter"
+                            android:id="@+id/add"
+                            />
+                        <Button
+                            android:text="Admin"
+                            android:id="@+id/admin"
+                            />
+                        </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"></TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"></TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"></TableRow>
+                </TableLayout>
             </HorizontalScrollView>
         </RelativeLayout>
     </ScrollView>
