@@ -2,7 +2,10 @@
   <dictionary name="celine">
     <words>
       <w>accessors</w>
+<<<<<<< HEAD
       <w>childs</w>
+=======
+>>>>>>> b24ecc2ebaa25320b7c39fe1e3307fa449a72268
     </words>
   </dictionary>
 </component>
