@@ -22,11 +22,27 @@ public class CCard extends Card {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                Specific to Composite                                      //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public void ajouter(Card newChild) {
+    // Link this card with a new child
+    public void add(Card newChild) {
         childs.add(newChild);
     }
 
-    public void remove(Card childToRemove) { childs.remove(childToRemove); }
+    // Link this card with a new child and save it in database
+    public void add(Card newChild, DBManager manager) {
+        newChild = manager.add(newChild,this.getId());
+        childs.add(newChild);
+    }
+
+    // UnLink this card with one of it's child
+    public void remove(Card childToRemove) {
+        childs.remove(childToRemove);
+    }
+
+    // UnLink this card with one of it's child and remove this child of database
+    public void remove(Card childToRemove, DBManager manager) {
+        childs.remove(childToRemove);
+        manager.remove(childToRemove);
+    }
 
     public ArrayList<Card> getChilds() { return childs; }
 
