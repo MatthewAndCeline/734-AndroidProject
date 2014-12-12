@@ -4,7 +4,7 @@ package com.info.matthewceline.classeurcom;
  * Created by celine on 04/12/14.
  * Composant (pattern Composite)
  */
-public abstract class Card {
+public abstract class AbstractCard {
 
     private int id;
     private String title;
@@ -18,7 +18,7 @@ public abstract class Card {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                     Constructor                                           //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    Card(int _id, String _title, String _picture) {
+    AbstractCard(int _id, String _title, String _picture) {
         id = _id;
         title = _title;
         picture = _picture;

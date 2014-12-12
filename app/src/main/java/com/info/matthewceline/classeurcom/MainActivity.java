@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    //                                       Dialogues                                           //
+    //                                       Dialogs                                           //
     ///////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected Dialog onCreateDialog(int id) {
