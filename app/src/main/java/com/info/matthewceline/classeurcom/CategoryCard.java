@@ -25,10 +25,10 @@ public class CategoryCard extends AbstractCard {
     // Link this card with a new child
     public void add(AbstractCard newChild) {
         childs.add(newChild);
-    }
+    } //Done
 
     // Link this card with a new child and save it in database
-    public void add(AbstractCard newChild, DBManager manager) {
+    public void add(AbstractCard newChild, DBManager manager) { //Done
         newChild = manager.add(newChild,this.getId());
         childs.add(newChild);
     }

@@ -21,7 +21,7 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                Make cards from Database                                 //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public void createCardsFromDatabase(CategoryCard root) {
+    public void createCardsFromDatabase(CategoryCard root) { //Done
 
         db.execSQL("CREATE TABLE IF NOT EXISTS Cards("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //column 0
@@ -36,7 +36,7 @@ public class DBManager {
 
     }
 
-    private void createCardsFromDatabaseRec(CategoryCard parent) {
+    private void createCardsFromDatabaseRec(CategoryCard parent) { //Done
 
         //Search all childs of the parent card
         Cursor resultSet = db.rawQuery("SELECT * FROM Cards WHERE id_parent = " + parent.getId(), null);
@@ -60,7 +60,7 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                   Add/Remove elements                                     //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public AbstractCard add(AbstractCard _card, int id_parent) {
+    public AbstractCard add(AbstractCard _card, int id_parent) { //Done
         _card.setId(getMaxId());
         db.execSQL("INSERT INTO Cards VALUES("
                         + _card.getId() + ",\""
@@ -74,7 +74,7 @@ public class DBManager {
     }
 
 
-    public void remove(AbstractCard _card) {
+    public void remove(AbstractCard _card) { //Done
         if (_card.getType() == "C") {
             CategoryCard ccard = (CategoryCard) _card;
             for (AbstractCard child : ccard.getChilds()) {
@@ -88,7 +88,7 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                          Tools                                            //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public int getMaxId() {
+    public int getMaxId() { //Done
 
         Cursor resultSet = db.rawQuery("Select * from Cards ORDER BY id DESC LIMIT 1",null);
         if (!resultSet.moveToNext()) { return 1; }
