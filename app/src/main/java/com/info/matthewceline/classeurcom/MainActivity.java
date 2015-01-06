@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("création");
         setContentView(R.layout.activity_main);
 
         db = openOrCreateDatabase(databaseName, MODE_APPEND, null); // populate database.
@@ -69,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
         public void onClick(View v) {
             onCreateDialog(22000);
         }
+
     }
 
     private class ClicAdmin implements View.OnClickListener {
@@ -133,6 +135,7 @@ public class MainActivity extends ActionBarActivity {
 
             case 22000:
                 Intent add_intent = new Intent(getApplicationContext(), AddActivity.class);
+                add_intent.putExtra("curent", currentCard.getId());
                 startActivityForResult(add_intent, 0);
                 break;
 
@@ -151,6 +154,10 @@ public class MainActivity extends ActionBarActivity {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     private void updateUI() {
+
+        for(AbstractCard card : data.getChilds()) {
+            System.out.println(card.getTitle());
+        }
 
         Button btHelp = (Button) findViewById(R.id.help);
         btHelp.setOnClickListener(new ClicHelp());

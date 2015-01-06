@@ -20,7 +20,10 @@ public class AddActivity extends ActionBarActivity {
     public FinalCard newFinalCard;
     ArrayList<AbstractCard> cardsThatExist = new ArrayList<>();
     public CategoryCard currentCard;
+    public String databaseName = "CardDatabase";
+    private SQLiteDatabase db;
     public DBManager manager;
+    int curId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +34,14 @@ public class AddActivity extends ActionBarActivity {
         final CheckBox categoryCheck = (CheckBox) findViewById(R.id.CheckBoxCategory);
         final CheckBox finalCheck = (CheckBox) findViewById(R.id.CheckBoxFinal);
 
-        CategoryCard currentCard = ((MainActivity)getParent()).currentCard;
-        DBManager manager = ((MainActivity)getParent()).manager;
+        //currentCard = ((MainActivity)getParent()).currentCard;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            curId = extras.getInt("curent");
+        }
 
-        /*db = openOrCreateDatabase(databaseName, MODE_APPEND, null); // populate database.
+        db = openOrCreateDatabase(databaseName, MODE_APPEND, null); // populate database.
         manager = new DBManager(db);
-
-        manager.createCardsFromDatabase(data);*/
 
     }
 
@@ -109,7 +113,7 @@ public class AddActivity extends ActionBarActivity {
             cardType = newCatCard.getType(); // not needed
 
             // Add this new card to array list.
-            manager.add(newCatCard,currentCard.getId());
+            manager.add(newCatCard,curId);
             cardsThatExist.add(newCatCard);
             defaultStartingID++;
 
