@@ -19,6 +19,10 @@ public class CategoryCard extends AbstractCard {
         return "C";
     }
 
+    CategoryCard chosenCard(CategoryCard thisCard){
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                Specific to Composite                                      //
     ///////////////////////////////////////////////////////////////////////////////////////////////
