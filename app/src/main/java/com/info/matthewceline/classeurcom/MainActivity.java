@@ -20,7 +20,7 @@ public class MainActivity extends ActionBarActivity {
 
     // test root card
     private final CategoryCard data = new CategoryCard(0,"root","root");
-    private CategoryCard currentCard = data;
+    public CategoryCard currentCard = data;
 
     public ArrayList<CategoryCard> ccards = new ArrayList<CategoryCard>(); // The cards to be displayed.
     private final ArrayList<AbstractCard> path = new ArrayList<>();
@@ -214,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private void afficheCartes(ArrayList<TableRow> lignes, int nb_par_ligne) {
+    private void displayCards(ArrayList<TableRow> lignes, int nb_par_ligne) {
 
         ArrayList<ImageButton> cardButtons = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.info.matthewceline.classeurcom;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -18,6 +19,8 @@ public class AddActivity extends ActionBarActivity {
     public CategoryCard newCatCard;
     public FinalCard newFinalCard;
     ArrayList<AbstractCard> cardsThatExist = new ArrayList<>();
+    public CategoryCard currentCard;
+    public DBManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,13 @@ public class AddActivity extends ActionBarActivity {
         final CheckBox categoryCheck = (CheckBox) findViewById(R.id.CheckBoxCategory);
         final CheckBox finalCheck = (CheckBox) findViewById(R.id.CheckBoxFinal);
 
+        CategoryCard currentCard = ((MainActivity)getParent()).currentCard;
+        DBManager manager = ((MainActivity)getParent()).manager;
 
+        /*db = openOrCreateDatabase(databaseName, MODE_APPEND, null); // populate database.
+        manager = new DBManager(db);
+
+        manager.createCardsFromDatabase(data);*/
 
     }
 
@@ -100,6 +109,7 @@ public class AddActivity extends ActionBarActivity {
             cardType = newCatCard.getType(); // not needed
 
             // Add this new card to array list.
+            manager.add(newCatCard,currentCard.getId());
             cardsThatExist.add(newCatCard);
             defaultStartingID++;
 
@@ -113,10 +123,6 @@ public class AddActivity extends ActionBarActivity {
             cardsThatExist.add(newFinalCard);
             defaultStartingID++;
         }
-
-
-
-
 
 
     }
