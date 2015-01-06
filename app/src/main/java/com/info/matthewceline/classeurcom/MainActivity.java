@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -81,12 +83,29 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //create the intent which will be used to open the addActivity
-            Intent add_intent = new Intent(getApplicationContext(), AddActivity.class);
-            //transmit the curentCard id to the addActivity (so that we know in what category is the new card)
-            add_intent.putExtra("curent", currentCard.getId());
+            int defaultStartingID = 10;
 
-            startActivityForResult(add_intent, 0);
+            final CheckBox responseFinal = (CheckBox) findViewById(R.id.CheckBoxFinal);
+            boolean finalCheck = responseFinal.isChecked();
+
+            final EditText name = (EditText) findViewById(R.id.EditTextCardName);
+            String newCardName = name.getText().toString();
+
+            final EditText picture = (EditText) findViewById(R.id.EditTextCardPicture);
+            String newCardPicture = picture.getText().toString();
+
+            if(!finalCheck) {
+                CategoryCard newCatCard = new CategoryCard(defaultStartingID, newCardName, newCardPicture);
+                newCatCard = (CategoryCard) manager.add(newCatCard,currentCard.getId());
+                currentCard.add(newCatCard);
+            }
+            else {
+                FinalCard newFinalCard = new FinalCard(defaultStartingID, newCardName, newCardPicture);
+                newFinalCard = (FinalCard) manager.add(newFinalCard,currentCard.getId());
+                currentCard.add(newFinalCard);
+            }
+
+            updateUI();
         }
 
     }
@@ -114,6 +133,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onClick(View v) {
             //TODO : back button makes us go to the top category
+
         }
     }
 
@@ -132,9 +152,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateUI() {
 
+        //TODO : Remove this, it's only for debug
         for(AbstractCard card : data.getChilds()) {
             System.out.println(card.getTitle());
         }
+        //TODO end
 
         Button btHelp = (Button) findViewById(R.id.help);
         btHelp.setOnClickListener(new ClicHelp());
@@ -146,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
         btAdmin.setOnClickListener(new ClicAdmin());
 
         TableLayout pageLine = (TableLayout) findViewById(R.id.lnPage);
-        //pageLine.removeAllViewsInLayout();
+        pageLine.removeAllViewsInLayout();
 
 
         TableRow thirdRow = new TableRow(getApplicationContext());
@@ -176,20 +198,16 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private void displayPage() {
-
-    }
-
     private void displayCards(ArrayList<TableRow> lignes, int nb_par_ligne) {
 
         ArrayList<ImageButton> cardButtons = new ArrayList<>();
 
-        for(AbstractCard card : data.getChilds()) {
+        for(AbstractCard card : currentCard.getChilds()) {
             cardButtons.add(new ImageButton(this));
         }
 
         int i = 0;
-        for(AbstractCard card : data.getChilds()) {
+        for(AbstractCard card : currentCard.getChilds()) {
             int pict_id = getResources().getIdentifier(card.getPicture(), "drawable", getPackageName());
             if (pict_id == 0) { pict_id = getResources().getIdentifier("ic_launcher", "drawable", getPackageName()); }
             cardButtons.get(i).setImageDrawable(getResources().getDrawable(pict_id));

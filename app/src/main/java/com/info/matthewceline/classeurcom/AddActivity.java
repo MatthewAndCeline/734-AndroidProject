@@ -34,7 +34,6 @@ public class AddActivity extends ActionBarActivity {
         final CheckBox categoryCheck = (CheckBox) findViewById(R.id.CheckBoxCategory);
         final CheckBox finalCheck = (CheckBox) findViewById(R.id.CheckBoxFinal);
 
-        //currentCard = ((MainActivity)getParent()).currentCard;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             curId = extras.getInt("curent");
