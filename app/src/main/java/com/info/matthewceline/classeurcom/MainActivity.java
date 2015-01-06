@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -26,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
     // the parent of last CategoryCard
     public Stack<CategoryCard> currentPath = new Stack<>();
     // the finalCards selected by user to construct the sentence
-    private final ArrayList<FinalCard> path = new ArrayList<>();
+    private ArrayList<FinalCard> sentence = new ArrayList<>();
 
     //for database management
     public String databaseName = "CardDatabase";
@@ -61,13 +62,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
-                //path.add(data.getChilds().get(id));
                 if (currentCard.getChilds().get(id).getType() == "C") {
                     currentPath.push(currentCard);
                     currentCard = (CategoryCard) currentCard.getChilds().get(id);
                 }
                 else {
-                    path.add((FinalCard) currentCard.getChilds().get(id));
+                    sentence.add((FinalCard) currentCard.getChilds().get(id));
                 }
                 updateUI();
             }
@@ -204,6 +204,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void displaySentence() {
+        LinearLayout lnSentence = (LinearLayout) findViewById(R.id.lnSentence);
+        lnSentence.removeAllViewsInLayout();
+
+        ArrayList<Button> wordsButtons = new ArrayList<>();
+
+        for (FinalCard card : sentence) {
+            wordsButtons.add(new Button(this));
+        }
+
+        int i = 0;
+        for (FinalCard card : sentence) {
+            wordsButtons.get(i).setText(card.getTitle());
+            lnSentence.addView(wordsButtons.get(i));
+        }
 
     }
 
