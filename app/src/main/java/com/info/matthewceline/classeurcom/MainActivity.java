@@ -14,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -22,6 +23,8 @@ public class MainActivity extends ActionBarActivity {
     private final CategoryCard data = new CategoryCard(0,"root","root");
     // the last CategoryCard selected by user
     public CategoryCard currentCard = data;
+    // the parent of last CategoryCard
+    public Stack<CategoryCard> currentPath = new Stack<>();
     // the finalCards selected by user to construct the sentence
     private final ArrayList<FinalCard> path = new ArrayList<>();
 
@@ -42,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
         manager = new DBManager(db);
 
         //create objects using datas in database
+        currentPath.push(data);
         manager.createCardsFromDatabase(data);
 
         //displaying the cards and associating buttons with actions
@@ -59,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
                 int id = v.getId();
                 //path.add(data.getChilds().get(id));
                 if (currentCard.getChilds().get(id).getType() == "C") {
+                    currentPath.push(currentCard);
                     currentCard = (CategoryCard) currentCard.getChilds().get(id);
                 }
                 else {
@@ -132,8 +137,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //TODO : back button makes us go to the top category
-
+            if (currentCard.getId() != 0) currentCard = currentPath.pop();
+            updateUI();
         }
     }
 
@@ -143,6 +148,7 @@ public class MainActivity extends ActionBarActivity {
         public void onClick(View v) {
             //TODO : undo button remove last finalCard of the sentence
         }
+
     }
 
 
@@ -157,6 +163,9 @@ public class MainActivity extends ActionBarActivity {
             System.out.println(card.getTitle());
         }
         //TODO end
+
+        Button btBack = (Button) findViewById(R.id.goback);
+        btBack.setOnClickListener(new ClicBack());
 
         Button btHelp = (Button) findViewById(R.id.help);
         btHelp.setOnClickListener(new ClicHelp());
