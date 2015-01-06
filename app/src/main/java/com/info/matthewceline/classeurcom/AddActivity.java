@@ -95,13 +95,9 @@ public class AddActivity extends ActionBarActivity {
             alert11.show();
         }
 
-        if(finalCheck == true){
-            cardType = newCatCard.getType(); // not needed
+        if(!finalCheck){
             newCatCard = new CategoryCard(defaultStartingID, newCardName, newCardPicture);
-            newCatCard.setId(defaultStartingID);
-            newCatCard.setTitle(newCardName);
-            newCatCard.setPicture(newCardPicture);
-
+            cardType = newCatCard.getType(); // not needed
 
             // Add this new card to array list.
             cardsThatExist.add(newCatCard);
@@ -109,11 +105,8 @@ public class AddActivity extends ActionBarActivity {
 
         }
         else{
-            cardType = newFinalCard.getType(); // not needed
             newFinalCard = new FinalCard(defaultStartingID, newCardName, newCardPicture);
-            newFinalCard.setId(defaultStartingID);
-            newFinalCard.setTitle(newCardName);
-            newFinalCard.setPicture(newCardPicture);
+            cardType = newFinalCard.getType(); // not needed
             defaultStartingID++;
 
             // Add this new card to array list.

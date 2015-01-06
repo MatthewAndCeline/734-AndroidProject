@@ -162,14 +162,13 @@ public class MainActivity extends ActionBarActivity {
         btAdmin.setOnClickListener(new ClicAdmin());
 
         TableLayout pageLine = (TableLayout) findViewById(R.id.lnPage);
-        pageLine.removeAllViewsInLayout();
+        //pageLine.removeAllViewsInLayout();
+
 
         TableRow thirdRow = new TableRow(getApplicationContext());
         ArrayList<TableRow> rows = new ArrayList<>();
 
         int numOfLines = createRow(pageLine, rows);
-
-
 
     }
     /*
