@@ -1,11 +1,9 @@
 package com.info.matthewceline.classeurcom;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
@@ -18,30 +16,33 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
-    // test root card
+    // the root card
     private final CategoryCard data = new CategoryCard(0,"root","root");
+    // the last CategoryCard selected by user
     public CategoryCard currentCard = data;
+    // the finalCards selected by user to construct the sentence
+    private final ArrayList<FinalCard> path = new ArrayList<>();
 
-    public ArrayList<CategoryCard> ccards = new ArrayList<CategoryCard>(); // The cards to be displayed.
-    private final ArrayList<AbstractCard> path = new ArrayList<>();
-
+    //for database management
     public String databaseName = "CardDatabase";
     private SQLiteDatabase db;
     public DBManager manager;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("création");
+
         setContentView(R.layout.activity_main);
 
-        db = openOrCreateDatabase(databaseName, MODE_APPEND, null); // populate database.
+        //create database manager
+        db = openOrCreateDatabase(databaseName, MODE_APPEND, null);
         manager = new DBManager(db);
 
+        //create objects using datas in database
         manager.createCardsFromDatabase(data);
+
+        //displaying the cards and associating buttons with actions
         updateUI();
     }
 
@@ -50,10 +51,21 @@ public class MainActivity extends ActionBarActivity {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     private class ClicCard implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
 
-        }
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                //path.add(data.getChilds().get(id));
+                if (currentCard.getChilds().get(id).getType() == "C") {
+                    currentCard = (CategoryCard) currentCard.getChilds().get(id);
+                }
+                else {
+                    path.add((FinalCard) currentCard.getChilds().get(id));
+                }
+                updateUI();
+            }
+
+
     }
 
     private class LongClicCard implements View.OnClickListener {
@@ -62,13 +74,19 @@ public class MainActivity extends ActionBarActivity {
         public void onClick(View v) {
 
         }
+
     }
 
     private class ClicAddBt implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            onCreateDialog(22000);
+            //create the intent which will be used to open the addActivity
+            Intent add_intent = new Intent(getApplicationContext(), AddActivity.class);
+            //transmit the curentCard id to the addActivity (so that we know in what category is the new card)
+            add_intent.putExtra("curent", currentCard.getId());
+
+            startActivityForResult(add_intent, 0);
         }
 
     }
@@ -77,7 +95,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            onCreateDialog(20000);
+            Intent admin_intent = new Intent(getApplicationContext(), AdminActivity.class);
+            startActivityForResult(admin_intent, 0);
         }
     }
 
@@ -85,7 +104,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            onCreateDialog(21000);
+            Intent help_intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivityForResult(help_intent, 0);
         }
     }
 
@@ -93,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-
+            //TODO : back button makes us go to the top category
         }
     }
 
@@ -101,51 +121,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-
+            //TODO : undo button remove last finalCard of the sentence
         }
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    //                                       Dialogs                                           //
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    protected Dialog onCreateDialog(int id) {
-
-            //id available values :
-            //0 -> 19999 = Card Id
-            //20000 = admin
-            //21000 = help
-            //22000 = add a Card
-
-        Dialog box = new Dialog(this);
-        box.setTitle("Un dialogue");
-        switch (id)
-        {
-            case 20000:
-                Intent admin_intent = new Intent(getApplicationContext(), AdminActivity.class);
-                startActivityForResult(admin_intent, 0);
-                break;
-
-            case 21000:
-
-                Intent help_intent = new Intent(getApplicationContext(), HelpActivity.class);
-                startActivityForResult(help_intent, 0);
-                break;
-
-            case 22000:
-                Intent add_intent = new Intent(getApplicationContext(), AddActivity.class);
-                add_intent.putExtra("curent", currentCard.getId());
-                startActivityForResult(add_intent, 0);
-                break;
-
-        }
-        return box;
-    }
-
-    @Override
-    protected void onPrepareDialog(int id, @NonNull Dialog box) {
-
     }
 
 
@@ -176,20 +153,10 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<TableRow> rows = new ArrayList<>();
 
         int numOfLines = createRow(pageLine, rows);
+        displayCards(rows,numOfLines);
+
 
     }
-    /*
-    private class clickToOpenCard implements View.OnClickListener {
-
-
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            path.add(data.getChilds().get(id));
-            data = data.getChilds().get(id).(this);
-
-        }
-    }*/
 
     private int createRow(TableLayout lines, ArrayList<TableRow> rows){
 
@@ -213,14 +180,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private void displayAdminDialog() {
-
-    }
-
-    private void displayAddDialog() {
-
-    }
-
     private void displayCards(ArrayList<TableRow> lignes, int nb_par_ligne) {
 
         ArrayList<ImageButton> cardButtons = new ArrayList<>();
@@ -235,8 +194,7 @@ public class MainActivity extends ActionBarActivity {
             if (pict_id == 0) { pict_id = getResources().getIdentifier("ic_launcher", "drawable", getPackageName()); }
             cardButtons.get(i).setImageDrawable(getResources().getDrawable(pict_id));
             cardButtons.get(i).setId(i);
-            //cardButtons.get(i).setOnClickListener(new ClicCourtPourOuvrirCarte());
-            //cardButtons.get(i).setOnLongClickListener(new ClicLongPourAfficherAide());
+            cardButtons.get(i).setOnClickListener(new ClicCard());
             cardButtons.get(i).setBackgroundColor(Color.TRANSPARENT);
             lignes.get(i / nb_par_ligne).addView(cardButtons.get(i));
             i++;
