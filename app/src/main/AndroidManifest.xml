@@ -21,10 +21,6 @@
             android:label="@string/title_activity_help" >
         </activity>
         <activity
-            android:name=".AddActivity"
-            android:label="@string/title_activity_add" >
-        </activity>
-        <activity
             android:name=".AdminActivity"
             android:label="@string/title_activity_admin" >
         </activity>
