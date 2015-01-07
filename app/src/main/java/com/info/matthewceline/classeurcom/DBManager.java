@@ -21,7 +21,7 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                Make cards from Database                                 //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public void createCardsFromDatabase(CategoryCard root) { //Done
+    public void createCardsFromDatabase(CategoryCard root) {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS Cards("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //column 0
@@ -36,7 +36,7 @@ public class DBManager {
 
     }
 
-    private void createCardsFromDatabaseRec(CategoryCard parent) { //Done
+    private void createCardsFromDatabaseRec(CategoryCard parent) {
 
         //Search all childs of the parent card
         Cursor resultSet = db.rawQuery("SELECT * FROM Cards WHERE id_parent = " + parent.getId(), null);
@@ -60,7 +60,7 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                   Add/Remove elements                                     //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public AbstractCard add(AbstractCard _card, int id_parent) { //Done
+    public AbstractCard add(AbstractCard _card, int id_parent) {
         _card.setId(getMaxId());
         db.execSQL("INSERT INTO Cards VALUES("
                         + _card.getId() + ",\""
@@ -74,7 +74,7 @@ public class DBManager {
     }
 
 
-    public void remove(AbstractCard _card) { //Done
+    public void remove(AbstractCard _card) {
         if (_card.getType() == "C") {
             CategoryCard ccard = (CategoryCard) _card;
             for (AbstractCard child : ccard.getChilds()) {
@@ -87,19 +87,20 @@ public class DBManager {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                   Import / Export                                         //
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    public void importer(String txt) {
-        String[] lignes = txt.split("&");
 
+    //Datas in table Cards are represented in a text file.
+    //In the file, rows are separated by "&" and fields by "--"
+
+    public void importer(String txt) {
+
+        //Clean the table
         db.execSQL("DELETE FROM Cards");
 
+        //Add each line found in the text file
+        String[] lignes = txt.split("&");
         for (String ligne : lignes) {
-            System.out.println(ligne);
             String[] fields = ligne.split("--");
-            for (String field : fields)
-                System.out.println(field);
             if (fields.length == 5) {
-                System.out.println("OK");
-                System.out.println("INSERT INTO Cards VALUES(" + fields[0] + ",\"" + fields[1] + "\",\"" + fields[2] + "\",\"" + fields[3] + "\"," + fields[4] + ")");
                 db.execSQL("INSERT INTO Cards VALUES(" + fields[0] + ",\"" + fields[1] + "\",\"" + fields[2] + "\",\"" + fields[3] + "\"," + fields[4] + ")");
             }
         }
@@ -109,8 +110,10 @@ public class DBManager {
     public String exporter() {
 
         String txt = "";
+        //Select all cards stored in database
         Cursor resultSet = db.rawQuery("SELECT * FROM Cards", null);
 
+        //For each card, save it in the text file
         while (resultSet.moveToNext()) {
             txt += resultSet.getInt(0) + "--" + resultSet.getString(1) + "--" + resultSet.getString(2) + "--" + resultSet.getString(3) + "--" + resultSet.getInt(4) + "&";
         }
@@ -122,7 +125,7 @@ public class DBManager {
     //                                          Tools                                            //
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    public int getMaxId() { //Done
+    public int getMaxId() {
 
         Cursor resultSet = db.rawQuery("Select * from Cards ORDER BY id DESC LIMIT 1",null);
         if (!resultSet.moveToNext()) { return 1; }

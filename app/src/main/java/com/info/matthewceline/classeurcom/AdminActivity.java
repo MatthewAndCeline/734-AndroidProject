@@ -45,6 +45,10 @@ public class AdminActivity extends ActionBarActivity {
 
 
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //                                       Listeners                                           //
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     private class ClicExport implements View.OnClickListener {
 
         @Override
@@ -52,7 +56,7 @@ public class AdminActivity extends ActionBarActivity {
             //TODO : export database as text file
             String txt = manager.exporter();
             String nomFichier = "classeurComConfig.txt";
-            ecrireFichier(nomFichier,txt);
+            writeFile(nomFichier, txt);
         }
 
     }
@@ -63,7 +67,7 @@ public class AdminActivity extends ActionBarActivity {
         public void onClick(View v) {
             //TODO : import database as text file
             String nomFichier = "classeurComConfig.txt";
-            String resultat = lireFichier(nomFichier);
+            String resultat = readFile(nomFichier);
             manager.importer(resultat);
             TextView txtV = (TextView) findViewById(R.id.txtFile);
             txtV.setText(resultat);
@@ -71,15 +75,19 @@ public class AdminActivity extends ActionBarActivity {
 
     }
 
-    private void ecrireFichier(String nomFichier,String monText) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //                         Tools for reading or writing files                                //
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
-        File sdLien = getExternalStorageDirectory();
-        File monFichier = new File(sdLien , nomFichier);
+    private void writeFile(String fileName, String myTxt) {
+
+        File sdCardDirectory = getExternalStorageDirectory();
+        File myFile = new File(sdCardDirectory , fileName);
         BufferedWriter writer = null;
         try {
-            FileWriter out = new FileWriter(monFichier);
+            FileWriter out = new FileWriter(myFile);
             writer = new BufferedWriter(out);
-            writer.write(monText);
+            writer.write(myTxt);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -93,22 +101,22 @@ public class AdminActivity extends ActionBarActivity {
         }
     }
 
-    private String lireFichier(String nomFichier) {
-        String monText="";
-        File sdLien = getExternalStorageDirectory();
-        File monFichier = new File(sdLien + "/" +nomFichier);
-        if (!monFichier.exists()) {
+    private String readFile(String fileName) {
+        String myTxt="";
+        File sdCardDirectory = getExternalStorageDirectory();
+        File myFile = new File(sdCardDirectory + "/" +fileName);
+        if (!myFile.exists()) {
             throw new RuntimeException("Fichier inexistant sur la carte sd");
         }
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(monFichier));
+            reader = new BufferedReader(new FileReader(myFile));
             StringBuilder builder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
-            monText = builder.toString();
+            myTxt = builder.toString();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -120,7 +128,7 @@ public class AdminActivity extends ActionBarActivity {
                 }
             }
         }
-        return monText;
+        return myTxt;
     }
 
     @Override
