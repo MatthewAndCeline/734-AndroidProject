@@ -1,12 +1,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.info.matthewceline.classeurcom.HelpActivity">
+    tools:context="com.info.matthewceline.classeurcom.HelpActivity"
+    android:weightSum="1">
 
-    <TextView android:text="@string/helpActivityTitle" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/btUndo"
+        android:text="Bouton Annuler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btUndoExplain"
+        android:text="Enlever le dernier mot de la phrase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btUndo"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
+    <TextView
+        android:id="@+id/btAdd"
+        android:text="Bouton Ajout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btAddExplain"
+        android:text="Ajouter une carte dans la catégorie courante (l'image doit avoir un nom valide)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btAdd"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
+    <TextView
+        android:id="@+id/btBack"
+        android:text="Bouton Retour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btBackExplain"
+        android:text="Remonter à la catégorie supérieure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btBack"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
+    <TextView
+        android:id="@+id/btHelp"
+        android:text="Bouton Aide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btHelpExplain"
+        android:text="Affiche cette page d'aide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btHelp"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
+    <TextView
+        android:id="@+id/btAdmin"
+        android:text="Bouton Admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btAdminExplain"
+        android:text="Permet d'exporter / importer la base de données.
+        L'export crée le fichier classeurComConfig.txt.
+        Copiez ce fichier sur une nouvelle tablette puis faites importer sur la nouvelle tablette
+        afin de récupérer les cartes."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btAdmin"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
 
 </LinearLayout>

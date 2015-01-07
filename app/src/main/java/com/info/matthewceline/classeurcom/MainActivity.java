@@ -178,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //Go back to superior category
+            //Go back to higher level category
             if (currentCard.getId() != 0) currentCard = currentPath.pop();
             updateUI();
         }
