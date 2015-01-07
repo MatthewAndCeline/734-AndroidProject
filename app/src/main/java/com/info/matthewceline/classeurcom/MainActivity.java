@@ -1,9 +1,13 @@
 package com.info.matthewceline.classeurcom;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
@@ -89,11 +93,29 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private class LongClicCard implements View.OnClickListener {
+    private class LongClicCard implements View.OnLongClickListener {
 
         @Override
-        public void onClick(View v) {
-            //TODO : Afficher le nom de la carte et proposer la possibilité de la supprimer
+        public boolean onLongClick(final View v) {
+            //Afficher le nom de la carte et proposer la possibilité de la supprimer
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create(); //Read Update
+            alertDialog.setTitle(currentCard.getChilds().get(v.getId()).getTitle());
+            alertDialog.setMessage("Upgrade Text Here");
+            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Fermer", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}
+            });
+            alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Effacer la carte", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.out.println("clic sur Delete");
+                    manager.remove(currentCard.getChilds().get(v.getId()));
+                    currentCard.remove(currentCard.getChilds().get(v.getId()));
+                    updateUI();
+                }
+            });
+            alertDialog.show();
+            return true;
         }
 
     }
@@ -135,7 +157,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //TODO : will allow user to upload / download a json file representing the database
+            //Allow user to upload / download a text file representing the database
             Intent admin_intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivityForResult(admin_intent, 0);
             updateUI();
@@ -174,7 +196,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
     }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                           Manage User Interface                                           //
@@ -268,7 +289,7 @@ public class MainActivity extends ActionBarActivity {
             cardButtons.get(i).setImageDrawable(getResources().getDrawable(pict_id));
             cardButtons.get(i).setId(i);
             cardButtons.get(i).setOnClickListener(new ClicCard());
-            //TODO  cardButtons.get(i).setOnLongClickListener(new LongClicCard());
+            cardButtons.get(i).setOnLongClickListener(new LongClicCard());
             cardButtons.get(i).setBackgroundColor(Color.TRANSPARENT);
             lignes.get(i / nb_par_ligne).addView(cardButtons.get(i));
             i++;
