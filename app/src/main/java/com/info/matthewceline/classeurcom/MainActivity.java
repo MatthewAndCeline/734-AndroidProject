@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
     public CategoryCard currentCard = data;
     // the parent of last CategoryCard
     public Stack<CategoryCard> currentPath = new Stack<>();
-    // the finalCards selected by user to construct the sentence
+    // the finalCards selected by user to make a sentence
     private ArrayList<FinalCard> sentence = new ArrayList<>();
 
     //for database management
@@ -146,7 +146,10 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //TODO : undo button remove last finalCard of the sentence
+            if (sentence.size() > 0) {
+                sentence.remove(sentence.size() - 1);
+                updateUI();
+            }
         }
 
     }
@@ -157,12 +160,6 @@ public class MainActivity extends ActionBarActivity {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     private void updateUI() {
-
-        //TODO : Remove this, it's only for debug
-        for(AbstractCard card : data.getChilds()) {
-            System.out.println(card.getTitle());
-        }
-        //TODO end
 
         Button btBack = (Button) findViewById(R.id.goback);
         btBack.setOnClickListener(new ClicBack());
@@ -186,6 +183,7 @@ public class MainActivity extends ActionBarActivity {
         int numOfLines = createRow(pageLine, rows);
         displayCards(rows,numOfLines);
 
+        displaySentence();
 
     }
 
@@ -204,6 +202,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void displaySentence() {
+
+        Button btUndo = (Button) findViewById(R.id.undo);
+        btUndo.setOnClickListener(new ClicUndo());
+
         LinearLayout lnSentence = (LinearLayout) findViewById(R.id.lnSentence);
         lnSentence.removeAllViewsInLayout();
 
@@ -217,7 +219,11 @@ public class MainActivity extends ActionBarActivity {
         for (FinalCard card : sentence) {
             wordsButtons.get(i).setText(card.getTitle());
             lnSentence.addView(wordsButtons.get(i));
+            i++;
         }
+
+
+        lnSentence.addView(btUndo);
 
     }
 
