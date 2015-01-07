@@ -21,7 +21,7 @@ import java.util.Stack;
 public class MainActivity extends ActionBarActivity {
 
     // the root card
-    private final CategoryCard data = new CategoryCard(0,"root","root");
+    private CategoryCard data = new CategoryCard(0,"root","root");
     // the last CategoryCard selected by user
     public CategoryCard currentCard = data;
     // the parent of last CategoryCard
@@ -50,6 +50,18 @@ public class MainActivity extends ActionBarActivity {
         manager.createCardsFromDatabase(data);
 
         //displaying the cards and associating buttons with actions
+        updateUI();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        data = new CategoryCard(0,"root","root");
+        manager.createCardsFromDatabase(data);
+
+        currentCard = data;
+        sentence = new ArrayList<>();
+
         updateUI();
     }
 
@@ -126,6 +138,7 @@ public class MainActivity extends ActionBarActivity {
             //TODO : will allow user to upload / download a json file representing the database
             Intent admin_intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivityForResult(admin_intent, 0);
+            updateUI();
         }
     }
 

@@ -42,7 +42,6 @@ public class DBManager {
         Cursor resultSet = db.rawQuery("SELECT * FROM Cards WHERE id_parent = " + parent.getId(), null);
 
         while (resultSet.moveToNext()) {
-            System.out.println(resultSet.getString(1));
             //Arrived in a Final Card, we add it to it's parent and stop recursivity
             if (resultSet.getString(3).equals("F")) {
                 FinalCard child = new FinalCard(resultSet.getInt(0),resultSet.getString(1),resultSet.getString(2));
@@ -85,6 +84,39 @@ public class DBManager {
         db.execSQL("DELETE FROM Cards WHERE id=" + _card.getId());
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //                                   Import / Export                                         //
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    public void importer(String txt) {
+        String[] lignes = txt.split("&");
+
+        db.execSQL("DELETE FROM Cards");
+
+        for (String ligne : lignes) {
+            System.out.println(ligne);
+            String[] fields = ligne.split("--");
+            for (String field : fields)
+                System.out.println(field);
+            if (fields.length == 5) {
+                System.out.println("OK");
+                System.out.println("INSERT INTO Cards VALUES(" + fields[0] + ",\"" + fields[1] + "\",\"" + fields[2] + "\",\"" + fields[3] + "\"," + fields[4] + ")");
+                db.execSQL("INSERT INTO Cards VALUES(" + fields[0] + ",\"" + fields[1] + "\",\"" + fields[2] + "\",\"" + fields[3] + "\"," + fields[4] + ")");
+            }
+        }
+
+    }
+
+    public String exporter() {
+
+        String txt = "";
+        Cursor resultSet = db.rawQuery("SELECT * FROM Cards", null);
+
+        while (resultSet.moveToNext()) {
+            txt += resultSet.getInt(0) + "--" + resultSet.getString(1) + "--" + resultSet.getString(2) + "--" + resultSet.getString(3) + "--" + resultSet.getInt(4) + "&";
+        }
+
+        return txt;
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                                          Tools                                            //
