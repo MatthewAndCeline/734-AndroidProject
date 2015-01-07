@@ -100,7 +100,6 @@ public class MainActivity extends ActionBarActivity {
             //Afficher le nom de la carte et proposer la possibilité de la supprimer
             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create(); //Read Update
             alertDialog.setTitle(currentCard.getChilds().get(v.getId()).getTitle());
-            alertDialog.setMessage("Upgrade Text Here");
             alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Fermer", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}

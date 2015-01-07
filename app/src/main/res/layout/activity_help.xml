@@ -85,9 +85,25 @@
     <TextView
         android:id="@+id/btAdminExplain"
         android:text="Permet d'exporter / importer la base de données.
-        L'export crée le fichier classeurComConfig.txt.
-        Copiez ce fichier sur une nouvelle tablette puis faites importer sur la nouvelle tablette
-        afin de récupérer les cartes."
+        \n L'export crée le fichier classeurComConfig.txt.
+        \n Copiez ce fichier sur une nouvelle tablette puis faites importer sur la nouvelle tablette afin de récupérer les cartes."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btAdmin"
+        android:textSize="@dimen/abc_text_size_medium_material" />
+
+    <TextView
+        android:id="@+id/btCarte"
+        android:text="Clic sur une carte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/button_material_dark"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:id="@+id/btCarteExplain"
+        android:text="Clic court : entrer dans la catégorie OU ajouter le mot dans la phrase.
+        \n Clic long : afficher le titre de la carte, possibilité de supprimer la carte."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btAdmin"
