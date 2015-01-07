@@ -8,4 +8,4 @@ Réaliser une version android d'un classeur de communication pour personne tétr
 
 Code source : /app/src/main/java/com/info/matthewceline/classeurcom/
 
-apk : /app/build/outputs/apk/manifest-merger-debug-report.txt
+apk : /app/build/outputs/apk
