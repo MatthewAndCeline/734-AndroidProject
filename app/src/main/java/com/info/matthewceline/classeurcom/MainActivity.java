@@ -62,10 +62,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
+                //Category : we enter into the category
                 if (currentCard.getChilds().get(id).getType() == "C") {
                     currentPath.push(currentCard);
                     currentCard = (CategoryCard) currentCard.getChilds().get(id);
                 }
+                //Final Card : we add the word to the sentence
                 else {
                     sentence.add((FinalCard) currentCard.getChilds().get(id));
                 }
@@ -79,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-
+            //TODO : Afficher le nom de la carte et proposer la possibilité de la supprimer
         }
 
     }
@@ -88,8 +90,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            int defaultStartingID = 10;
 
+            //get the name of the card, picture and type of card filled by user
             final CheckBox responseFinal = (CheckBox) findViewById(R.id.CheckBoxFinal);
             boolean finalCheck = responseFinal.isChecked();
 
@@ -99,13 +101,15 @@ public class MainActivity extends ActionBarActivity {
             final EditText picture = (EditText) findViewById(R.id.EditTextCardPicture);
             String newCardPicture = picture.getText().toString();
 
+            //Create final Card
             if(!finalCheck) {
-                CategoryCard newCatCard = new CategoryCard(defaultStartingID, newCardName, newCardPicture);
+                CategoryCard newCatCard = new CategoryCard(0, newCardName, newCardPicture);
                 newCatCard = (CategoryCard) manager.add(newCatCard,currentCard.getId());
                 currentCard.add(newCatCard);
             }
+            //Create category Card
             else {
-                FinalCard newFinalCard = new FinalCard(defaultStartingID, newCardName, newCardPicture);
+                FinalCard newFinalCard = new FinalCard(0, newCardName, newCardPicture);
                 newFinalCard = (FinalCard) manager.add(newFinalCard,currentCard.getId());
                 currentCard.add(newFinalCard);
             }
@@ -119,6 +123,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            //TODO : will allow user to upload / download a json file representing the database
             Intent admin_intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivityForResult(admin_intent, 0);
         }
@@ -128,6 +133,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            //TODO : will display a text explaining how to use the application
             Intent help_intent = new Intent(getApplicationContext(), HelpActivity.class);
             startActivityForResult(help_intent, 0);
         }
@@ -137,6 +143,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            //Go back to superior category
             if (currentCard.getId() != 0) currentCard = currentPath.pop();
             updateUI();
         }
@@ -146,6 +153,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            //Remove last word of the sentence
             if (sentence.size() > 0) {
                 sentence.remove(sentence.size() - 1);
                 updateUI();
@@ -161,6 +169,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateUI() {
 
+        //Associate buttons with actions
         Button btBack = (Button) findViewById(R.id.goback);
         btBack.setOnClickListener(new ClicBack());
 
@@ -173,32 +182,36 @@ public class MainActivity extends ActionBarActivity {
         Button btAdmin = (Button) findViewById(R.id.admin);
         btAdmin.setOnClickListener(new ClicAdmin());
 
+        //Erase the page of cards
         TableLayout pageLine = (TableLayout) findViewById(R.id.lnPage);
         pageLine.removeAllViewsInLayout();
 
 
-        TableRow thirdRow = new TableRow(getApplicationContext());
+        //Create the page of cards
         ArrayList<TableRow> rows = new ArrayList<>();
+        int numberOfCardsInOneLine = createRow(pageLine, rows);
+        displayCards(rows,numberOfCardsInOneLine);
 
-        int numOfLines = createRow(pageLine, rows);
-        displayCards(rows,numOfLines);
-
+        //Create the sentence
         displaySentence();
 
     }
 
+    //Create the 2 rows where the cards will be displayed
     private int createRow(TableLayout lines, ArrayList<TableRow> rows){
 
-        // Get size of cards stored.
-        int numOfLine = data.getChilds().size() / 2 + 1;
+        //Cards will fill 2 lines
+        int numberOfCardsInOneLine = data.getChilds().size() / 2 + 1;
         for(int i = 0; i < 2; i++){
             rows.add(new TableRow(getApplicationContext()));
         }
 
+        //Add the rows in the page
         for(TableRow line : rows){
             lines.addView(line);
         }
-        return numOfLine;
+
+        return numberOfCardsInOneLine;
     }
 
     private void displaySentence() {
@@ -242,6 +255,7 @@ public class MainActivity extends ActionBarActivity {
             cardButtons.get(i).setImageDrawable(getResources().getDrawable(pict_id));
             cardButtons.get(i).setId(i);
             cardButtons.get(i).setOnClickListener(new ClicCard());
+            //TODO  cardButtons.get(i).setOnLongClickListener(new LongClicCard());
             cardButtons.get(i).setBackgroundColor(Color.TRANSPARENT);
             lignes.get(i / nb_par_ligne).addView(cardButtons.get(i));
             i++;
